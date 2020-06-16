@@ -36,7 +36,7 @@ class stocknews():
         company (str) : ticker of company
 
         Returns:
-        
+
         """
         comp_url =  self.url + company + self.secondurl
         responses = requests.get(comp_url).json()
@@ -48,6 +48,3 @@ class stocknews():
             json.dump(responses, curr_file, indent=4)
 
         curr_file.close()
-
-test = stocknews()
-test.search('msft')
