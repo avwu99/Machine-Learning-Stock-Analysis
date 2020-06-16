@@ -39,16 +39,14 @@ class newsapi():
         response = requests.get(temp_url).json()
         #print(response)
         articles = response['articles'][0:10]
+        print(response['totalResults'])
+        return articles
 
-        return response
-
-    def get_descriptions(company):
+    def get_descriptions(self, company):
         articles = self.searchnews(company)
         desc = []
+
         for article in articles:
             desc.append(article['description'])
 
         return desc
-
-test = newsapi('62e85089066247dfaf298fdc1fc7f36d')
-print(test.get_descriptions('apple'))
