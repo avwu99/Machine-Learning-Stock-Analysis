@@ -7,12 +7,15 @@ import requests
 from datetime import datetime, timedelta
 
 class processor():
-    def __init__(self, direc, macd, rsi):
+    def __init__(self, direc, macd, rsi, hist):
         self.features = []
         self.targets = []
         self.directory = direc
         self.macddirectory = macd
         self.rsidirectory = rsi
+        self.historical = hist
+        self.ones = 0
+        self.zero = 0
 
 
     def get_sentiment(self):
@@ -58,7 +61,18 @@ class processor():
 
         dates = [threedate.strftime('%Y-%m-%d'), twodate.strftime('%Y-%m-%d'), onedate.strftime('%Y-%m-%d'), new_date]
 
-        return dates
+        day_after = datetimeobj + timedelta(days=1)
+        day_after1 = datetimeobj + timedelta(days=2)
+        day_after2 = datetimeobj + timedelta(days=3)
+        day_after3 = datetimeobj + timedelta(days=3)
+        day_after = day_after.strftime('%Y-%m-%d')
+        day_after1 = day_after1.strftime('%Y-%m-%d')
+        day_after2 = day_after2.strftime('%Y-%m-%d')
+        day_after3 = day_after3.strftime('%Y-%m-%d')
+
+        new_days = [day_after, day_after1, day_after2, day_after3]
+
+        return dates, new_days
 
     def trend_macd(self, macds):
         pass
@@ -94,7 +108,7 @@ class processor():
 
     def get_rsi(self):
         """ Builds upon features by calculating trend of RSIs the past 6 days from the date the article was published.
-        Also adds in feature of the RSI value of that day.
+        Also adds in feature of the RSI value of that day. Also populates targets.
 
         Parameters:
         None
@@ -113,32 +127,102 @@ class processor():
                     rsis_keys[0] = rsis_keys[0][0:11]
                     rsis = list(rsi_vals['Technical Analysis: RSI'].values())
 
+                    with open(os.path.join(self.historical, file), 'r') as hist_file:
+                        hist_vals = json.load(hist_file)
+                        hist_keys = list(hist_vals['Time Series (Daily)'].keys())
+                        hists = list(hist_vals['Time Series (Daily)'].values())
 
-                    for i in range(len(articles['data'])):
-                        #print(file)
-                        list_rsis = []
-                        orig = articles['data'][i]['date']
-                        formatted_date = self.get_date(orig)
-                        try:
-                            idx = rsis_keys.index(formatted_date[-1])
-                        except Exception as e:
+                        for i in range(len(articles['data'])):
+                            #print(file)
+                            list_rsis = []
+                            orig = articles['data'][i]['date']
+                            formatted_date, new_day = self.get_date(orig)
+
                             try:
-                                idx = rsis_keys.index(formatted_date[1])
+                                idx = rsis_keys.index(formatted_date[-1])
+                                histidx = hist_keys.index(formatted_date[-1])
                             except Exception as e:
-                                idx = rsis_keys.index(formatted_date[0])
+                                try:
+                                    idx = rsis_keys.index(formatted_date[2])
+                                    histidx = hist_keys.index(formatted_date[2])
+                                except Exception as e:
+                                    try:
+                                        idx = rsis_keys.index(formatted_date[1])
+                                        histidx = hist_keys.index(formatted_date[1])
+                                    except Exception as e:
+                                        try:
+                                            idx = rsis_keys.index(formatted_date[0])
+                                            histidx = hist_keys.index(formatted_date[0])
+                                        except Exception as e:
+                                            del self.features[counter]
+                                            continue
 
-                        if float(rsis[idx]['RSI']) < 35:
-                            self.features[counter][2] = 0
-                        elif float(rsis[idx]['RSI']) >= 35 and float(rsis[idx]['RSI']) <= 65:
-                            self.features[counter][2] = 1
-                        else:
-                            self.features[counter][2] = 2
-                        list_rsis.append(float(rsis[idx]['RSI']))
-                        for u in range(1, 6):
-                            list_rsis.insert(0, float(rsis[idx-u]['RSI']))
 
-                        self.features[counter][1] = self.trend_rsi(list_rsis)
-                        counter += 1
+                            if float(rsis[idx]['RSI']) < 35:
+                                self.features[counter][2] = 0
+                            elif float(rsis[idx]['RSI']) >= 35 and float(rsis[idx]['RSI']) <= 65:
+                                self.features[counter][2] = 1
+                            else:
+                                self.features[counter][2] = 2
 
+                            list_rsis.append(float(rsis[idx]['RSI']))
+
+                            for u in range(1, 6):
+                                list_rsis.insert(0, float(rsis[idx-u]['RSI']))
+
+                            print(new_day)
+                            try:
+                                newDateIdx = hist_keys.index(new_day[0])
+                            except Exception as e:
+                                try:
+                                    newDateIdx = hist_keys.index(new_day[1])
+                                except Exception as e:
+                                    try:
+                                        newDateIdx = hist_keys.index(new_day[2])
+                                    except Exception as e:
+                                        try:
+                                            newDateIdx = hist_keys.index(new_day[3])
+                                        except Exception as e:
+                                             del self.features[counter]
+                                             continue
+
+
+                            close1 = float(hists[histidx]['4. close'])
+                            close2 = float(hists[newDateIdx]['4. close'])
+
+                            self.features[counter][1] = self.trend_rsi(list_rsis)
+
+                            self.targets.append(self.calc_return(close1, close2))
+
+                            counter += 1
+
+                        hist_file.close()
                 rsi_file.close()
             curr_file.close()
+
+    def calc_return(self, close1, close2):
+        revenue = close2 - close1
+        percentProfit = revenue/close2
+
+        if percentProfit >= 0.05:
+            self.ones += 1
+            return 1
+        else:
+            self.zero += 1
+            return 0
+
+    def popluate_data(self):
+        self.get_sentiment()
+        self.get_rsi()
+        self.get_macd()
+
+test = processor('C:/Users/PC/Documents/github_projects/Machine-Learning-Stock-Analysis/data/energy/', 'C:/Users/PC/Documents/github_projects/Machine-Learning-Stock-Analysis/data/energyMACD/', 'C:/Users/PC/Documents/github_projects/Machine-Learning-Stock-Analysis/data/energyRSI/', 'C:/Users/PC/Documents/github_projects/Machine-Learning-Stock-Analysis/data/energyHistorical/')
+test.popluate_data()
+
+print(test.targets)
+
+print(np.array(test.features).shape)
+
+print(np.array(test.targets).shape)
+
+print(test.zero, test.ones)
