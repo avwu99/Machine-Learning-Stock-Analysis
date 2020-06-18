@@ -170,7 +170,7 @@ class processor():
                             for u in range(1, 6):
                                 list_rsis.insert(0, float(rsis[idx-u]['RSI']))
 
-                            print(new_day)
+
                             try:
                                 newDateIdx = hist_keys.index(new_day[0])
                             except Exception as e:
@@ -204,25 +204,25 @@ class processor():
         revenue = close2 - close1
         percentProfit = revenue/close2
 
-        if percentProfit >= 0.05:
+        if percentProfit >= 0.10:
             self.ones += 1
             return 1
         else:
             self.zero += 1
             return 0
 
-    def popluate_data(self):
+    def populate_data(self):
         self.get_sentiment()
         self.get_rsi()
         self.get_macd()
 
-test = processor('C:/Users/PC/Documents/github_projects/Machine-Learning-Stock-Analysis/data/energy/', 'C:/Users/PC/Documents/github_projects/Machine-Learning-Stock-Analysis/data/energyMACD/', 'C:/Users/PC/Documents/github_projects/Machine-Learning-Stock-Analysis/data/energyRSI/', 'C:/Users/PC/Documents/github_projects/Machine-Learning-Stock-Analysis/data/energyHistorical/')
-test.popluate_data()
-
-print(test.targets)
-
-print(np.array(test.features).shape)
-
-print(np.array(test.targets).shape)
-
-print(test.zero, test.ones)
+# test = processor('C:/Users/PC/Documents/github_projects/Machine-Learning-Stock-Analysis/data/energy/', 'C:/Users/PC/Documents/github_projects/Machine-Learning-Stock-Analysis/data/energyMACD/', 'C:/Users/PC/Documents/github_projects/Machine-Learning-Stock-Analysis/data/energyRSI/', 'C:/Users/PC/Documents/github_projects/Machine-Learning-Stock-Analysis/data/energyHistorical/')
+# test.popluate_data()
+#
+# print(test.targets)
+#
+# print(np.array(test.features).shape)
+#
+# print(np.array(test.targets).shape)
+#
+# print(test.zero, test.ones)
