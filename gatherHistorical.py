@@ -131,15 +131,3 @@ def get_hist():
             hist_file.close()
         curr_file.close()
         counter += 1
-
-# print("MacD Started")
-# get_macd()
-# print("MacD Done, Waiting")
-# time.sleep(60)
-# print("RSI Started")
-# get_rsi()
-# print("RSI Done, Waiting")
-# time.sleep(60)
-# print("Historical started")
-# get_hist()
-# print("All Done")
