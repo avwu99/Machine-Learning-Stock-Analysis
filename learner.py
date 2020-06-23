@@ -28,6 +28,7 @@ class learner():
         total = self.test_features.shape[0]
 
         predicted = self.l.predict(self.test_features)
+        print(predicted)
 
         for i in range(total):
             if predicted[i] == self.test_targets[i]:
@@ -45,12 +46,12 @@ targets = np.array(data.targets)
 machine = learner()
 
 total = 0
-for i in range(1000):
+for i in range(1):
     machine.split(features, targets)
     machine.fit_learner()
     percentage = machine.test_learner()
     total += percentage
 
-avg = total/1000
+avg = total/1
 
 print("Average Accuracy: ", avg)

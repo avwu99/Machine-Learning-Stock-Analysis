@@ -78,7 +78,7 @@ class processor():
         pass
 
     def trend_rsi(self, rsis):
-        """ Find overall trend of given RSIs
+        """ Find overall trend of given RSIs, using moving average equation
 
         Parameters:
         rsis(list) : List of RSIs
@@ -201,10 +201,21 @@ class processor():
             curr_file.close()
 
     def calc_return(self, close1, close2):
+        """ Takes in two closing prices to determine whether or not there was a significant increase/ rate of return
+
+        Parameters:
+        close1 (float): closing price of earliest date
+        close2 (float): Closing price of most recent date
+
+        Returns:
+        1 (int): good profit
+        0 (int): not significant profit 
+
+        """
         revenue = close2 - close1
         percentProfit = revenue/close2
 
-        if percentProfit >= 0.10:
+        if percentProfit >= 0.02:
             self.ones += 1
             return 1
         else:
