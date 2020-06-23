@@ -209,7 +209,7 @@ class processor():
 
         Returns:
         1 (int): good profit
-        0 (int): not significant profit 
+        0 (int): not significant profit
 
         """
         revenue = close2 - close1
@@ -226,14 +226,3 @@ class processor():
         self.get_sentiment()
         self.get_rsi()
         self.get_macd()
-
-# test = processor('C:/Users/PC/Documents/github_projects/Machine-Learning-Stock-Analysis/data/energy/', 'C:/Users/PC/Documents/github_projects/Machine-Learning-Stock-Analysis/data/energyMACD/', 'C:/Users/PC/Documents/github_projects/Machine-Learning-Stock-Analysis/data/energyRSI/', 'C:/Users/PC/Documents/github_projects/Machine-Learning-Stock-Analysis/data/energyHistorical/')
-# test.popluate_data()
-#
-# print(test.targets)
-#
-# print(np.array(test.features).shape)
-#
-# print(np.array(test.targets).shape)
-#
-# print(test.zero, test.ones)

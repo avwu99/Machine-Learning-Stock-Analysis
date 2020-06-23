@@ -28,7 +28,7 @@ class learner():
         total = self.test_features.shape[0]
 
         predicted = self.l.predict(self.test_features)
-        print(predicted)
+        #print(predicted)
 
         for i in range(total):
             if predicted[i] == self.test_targets[i]:
@@ -36,8 +36,9 @@ class learner():
 
         return correct/total
 
-
-data = processing.processor('C:/Users/PC/Documents/github_projects/Machine-Learning-Stock-Analysis/data/energy/', 'C:/Users/PC/Documents/github_projects/Machine-Learning-Stock-Analysis/data/energyMACD/', 'C:/Users/PC/Documents/github_projects/Machine-Learning-Stock-Analysis/data/energyRSI/', 'C:/Users/PC/Documents/github_projects/Machine-Learning-Stock-Analysis/data/energyHistorical/')
+################################## TESTING #####################################
+##consumercyc
+data = processing.processor('C:/Users/PC/Documents/github_projects/Machine-Learning-Stock-Analysis/data/consumercyc/', 'C:/Users/PC/Documents/github_projects/Machine-Learning-Stock-Analysis/data/consumercycMACD/', 'C:/Users/PC/Documents/github_projects/Machine-Learning-Stock-Analysis/data/consumercycRSI/', 'C:/Users/PC/Documents/github_projects/Machine-Learning-Stock-Analysis/data/consumercycHistorical/')
 data.populate_data()
 
 features = np.array(data.features)
@@ -46,12 +47,55 @@ targets = np.array(data.targets)
 machine = learner()
 
 total = 0
-for i in range(1):
+for i in range(100):
     machine.split(features, targets)
     machine.fit_learner()
     percentage = machine.test_learner()
     total += percentage
 
-avg = total/1
+avg = total/100
 
-print("Average Accuracy: ", avg)
+print("Consumer Cyc Average Accuracy: ", avg)
+
+## Energy
+data = processing.processor('C:/Users/PC/Documents/github_projects/Machine-Learning-Stock-Analysis/data/energy/', 'C:/Users/PC/Documents/github_projects/Machine-Learning-Stock-Analysis/data/energyMACD/', 'C:/Users/PC/Documents/github_projects/Machine-Learning-Stock-Analysis/data/energyRSI/', 'C:/Users/PC/Documents/github_projects/Machine-Learning-Stock-Analysis/data/energyHistorical/')
+
+data.populate_data()
+
+features = np.array(data.features)
+targets = np.array(data.targets)
+
+machine = learner()
+
+total = 0
+for i in range(100):
+    machine.split(features, targets)
+    machine.fit_learner()
+    percentage = machine.test_learner()
+    total += percentage
+
+avg = total/100
+
+print("Energy Average Accuracy: ", avg)
+
+
+## Tech
+data = processing.processor('C:/Users/PC/Documents/github_projects/Machine-Learning-Stock-Analysis/data/tech/', 'C:/Users/PC/Documents/github_projects/Machine-Learning-Stock-Analysis/data/techMACD/', 'C:/Users/PC/Documents/github_projects/Machine-Learning-Stock-Analysis/data/techRSI/', 'C:/Users/PC/Documents/github_projects/Machine-Learning-Stock-Analysis/data/techHistorical/')
+
+data.populate_data()
+
+features = np.array(data.features)
+targets = np.array(data.targets)
+
+machine = learner()
+
+total = 0
+for i in range(100):
+    machine.split(features, targets)
+    machine.fit_learner()
+    percentage = machine.test_learner()
+    total += percentage
+
+avg = total/100
+
+print("Tech Average Accuracy: ", avg)
