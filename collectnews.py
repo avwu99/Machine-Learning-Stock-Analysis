@@ -12,6 +12,10 @@ tech        = ['MYSZ', 'MRIN', 'NSYS', 'MICT', 'SPI', 'WSTL', 'VVPR', 'CPAH', 'C
 
 all_comps = [consumercyc, energy, tech]
 
+new_con = ['BLBD', 'BSET', 'CAAS', 'CATO', 'CONN', 'CPS', 'FFHL', 'FRAN', 'FRGI', 'FUV', 'MYE', 'PLAY', 'RMBL', 'SUP', 'TUP', 'XELB', 'XSPA', 'ZAGG']
+new_ene = ['CHAP', 'CHK', 'CVIA', 'DSSI', 'ESTE', 'FTSI', 'GASS', 'GLP', 'ICD', 'KRP', 'LEU', 'LPI', 'MNRL', 'NBLX', 'NESR', 'NVGS', 'OMP', 'PBFX', 'PVAC', 'TRMD']
+new_tec = ['AAOI', 'BNFT', 'CAMP', 'CMBM', 'EMAN', 'GNSS', 'IDN', 'INPX', 'LYTS', 'NEON', 'PLT', 'QUIK', 'RIOT', 'SNCR', 'SONM', 'SQNS', 'TUFN', 'VECO', 'VUZI', 'WRTC']
+
 class stocknews():
     def __init__(self):
         self.url = 'https://stocknewsapi.com/api/v1?tickers='

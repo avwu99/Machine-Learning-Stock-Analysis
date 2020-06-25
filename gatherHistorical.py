@@ -91,19 +91,6 @@ def get_rsi():
         curr_file.close()
         counter += 1
 
-def specific_rsi(ticker):
-    url = 'https://www.alphavantage.co/query?function=RSI&symbol='
-    url2 = '&interval=daily&time_period=14&series_type=open&apikey=' + config.alpha_token
-    comp_url = url + ticker + url2
-
-    response = requests.get(comp_url).json()
-    title = ticker + '.json'
-    completepath = os.path.join(rsidirectory, title)
-
-    with open(completepath, 'w+') as rsi_file:
-        json.dump(response, rsi_file, indent=4)
-
-    rsi_file.close()
 
 def get_hist():
 
@@ -131,3 +118,85 @@ def get_hist():
             hist_file.close()
         curr_file.close()
         counter += 1
+
+def specific_rsi(ticker):
+    url = 'https://www.alphavantage.co/query?function=RSI&symbol='
+    url2 = '&interval=daily&time_period=14&series_type=open&apikey=' + config.alpha_token
+
+    counter = 0
+    for i in ticker:
+        if counter == 5:
+            counter = 0
+            time.sleep(60)
+
+        comp_url = url + i + url2
+
+        response = requests.get(comp_url).json()
+        title = i + '.json'
+        completepath = os.path.join(rsidirectory, title)
+
+        with open(completepath, 'w+') as rsi_file:
+            json.dump(response, rsi_file, indent=4)
+
+        rsi_file.close()
+
+        counter += 1
+
+def specific_hist(ticker):
+    url = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol='
+    url2 = '&apikey=' + config.alpha_token
+
+    counter = 0
+    for i in ticker:
+        if counter == 5:
+            counter = 0
+            time.sleep(60)
+
+        comp_url = url + i + url2
+
+        response = requests.get(comp_url).json()
+        title = i + '.json'
+        completepath = os.path.join(historical, title)
+
+        with open(completepath, 'w+') as hist_file:
+            json.dump(response, hist_file, indent=4)
+
+        hist_file.close()
+
+        counter += 1
+
+def specific_macd(ticker):
+    url = 'https://www.alphavantage.co/query?function=MACD&symbol='
+    url2 = '&interval=daily&series_type=open&apikey=' + config.alpha_token
+
+    counter = 0
+    for i in ticker:
+        if counter == 5:
+            counter = 0
+            time.sleep(60)
+
+        comp_url = url + i + url2
+
+        response = requests.get(comp_url).json()
+        title = i + '.json'
+        completepath = os.path.join(macddirectory, title)
+
+        with open(completepath, 'w+') as macd_file:
+            json.dump(response, macd_file, indent=4)
+
+        macd_file.close()
+
+        counter += 1
+
+def get_specifics(tickers):
+    print("starting macd")
+    specific_macd(tickers)
+    print("macd done, waiting")
+    time.sleep(60)
+    print("starting rsi")
+    specific_rsi(tickers)
+    print("rsi done, waiting")
+    time.sleep(60)
+    print("starting historical")
+    specific_hist(tickers)
+    print("all done")

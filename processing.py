@@ -215,7 +215,7 @@ class processor():
         revenue = close2 - close1
         percentProfit = revenue/close2
 
-        if percentProfit >= 0.02:
+        if percentProfit >= 0.05:
             self.ones += 1
             return 1
         else:

@@ -1,7 +1,7 @@
 # Machine-Learning-Stock-Analysis
 Use sentiment analysis of past articles and analysis of technical indicators to predict short term trends of stocks. Target specific industries and companies following a max market cap.
 
-With about 400 data points for each industry, we are at an average of around 66% accuracy.
+With about 600 data points for each industry, we are at an average of around 66% accuracy.
 
 # Work in Progress
 - Implementing MACD analysis
@@ -37,7 +37,7 @@ alpha_token = '**** YOUR ALPHA VANTAGE API ****'
 
 ```
 # Usage
-Once you have your data, all you have to do is use processor.py to create your features and targets, then use learner.py to fit and train a learner for classification. Example can be seen in the "Testing" section in the learner.py file.
+Once you have your data in a file called 'data', all you have to do is use processor.py to create your features and targets, then use learner.py to fit and train a learner for classification. Example can be seen in the "Testing" section in the learner.py file.
 
 ## Data Form
 In order to use these files, you must collect your own data (news and any historical/technical data on stocks). The news collected from the StockNews API were in the form of JSON files as follows:

@@ -44,6 +44,7 @@ data.populate_data()
 features = np.array(data.features)
 targets = np.array(data.targets)
 
+print(features.shape)
 machine = learner()
 
 total = 0
@@ -64,6 +65,7 @@ data.populate_data()
 
 features = np.array(data.features)
 targets = np.array(data.targets)
+print(features.shape)
 
 machine = learner()
 
@@ -86,7 +88,7 @@ data.populate_data()
 
 features = np.array(data.features)
 targets = np.array(data.targets)
-
+print(features.shape)
 machine = learner()
 
 total = 0
