@@ -6,6 +6,7 @@ With about 600 data points for each industry, we are at an average of around 66%
 # Work in Progress
 - Implementing MACD analysis
 - Collecting more data
+- Implementing Java Rest API for GUI 
 
 # APIs Used
 - Alpha Vantage
